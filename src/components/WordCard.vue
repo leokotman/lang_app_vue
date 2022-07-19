@@ -1,11 +1,12 @@
 <template>
   <section>
-      <img :alt="shownWord.url" />
-      <h2>{{ shownWord.English }}</h2>
-      <h2>{{ shownWord.Serbian }}</h2>
-      <h2>{{ shownWord.id }}</h2>
-      <button @click="changeWord">Change word</button>
-      <p v-if="emptyWords">You learned everything!</p>
+    <img :alt="shownWord.url" />
+    <h2>{{ shownWord.English }}</h2>
+    <h2>{{ shownWord.Serbian }}</h2>
+    <h2>{{ shownWord.id }}</h2>
+    <button @click="changeWord">Change correct word</button>
+    <button @click="checkWord" >False word</button>
+    <p v-if="emptyWords">You learned everything!</p>
   </section>
 </template>
 
@@ -24,26 +25,32 @@ export default {
     },
     words: {
       type: Array,
-      required: true
-    }
+      required: true,
+    },
   },
   methods: {
     changeWord() {
-      this.shownWord.answered = true;
-      this.wordsToLearn--;
+      this._removeWord();
       this.$emit("changeWord", this.shownWord);
     },
-    checkWords() {
+    _calculateWords() {
       if (this.shownWord.answered === true || this.wordsToLearn <= 0) {
-        return this.emptyWords = true;
+        return (this.emptyWords = true);
       } else {
         return;
       }
-    }
+    },
+    checkWord() {
+      this.$emit("changeWord", this.shownWord);
+    },
+    _removeWord() {
+      this.shownWord.answered = true;
+      this.wordsToLearn--;
+    },
   },
   beforeUpdate() {
-    this.checkWords();
-  }
+    this._calculateWords();
+  },
 };
 </script>
 

@@ -3,15 +3,19 @@
     <h1>Hello WORLD!</h1>
     <WordCard
       :shownWord="shownWord"
-      :words="words"
+      :words="wordsToLearn"
       @changeWord="changeWord(shownWord)"
     />
+    <div> <img src="./assets/icons/like.svg" alt="like"/> {{learnedWords}} / {{words.length}} </div>
+    <div> <img src="./assets/icons/dislike.svg" alt="dislike"/> {{newWords}} / {{words.length}} </div>
   </div>
 </template>
 
 <script>
 import WordCard from "./components/WordCard.vue";
 import data from "./data.json";
+// import like from "./assets/icons/like.svg";
+// import dislike from "./assets/icons/dislike.svg";
 
 export default {
   name: "App",
@@ -21,6 +25,21 @@ export default {
       shownWord: {},
       wordsToLearn: [],
     };
+  },
+  computed: {
+      learnedWords() {
+        return this.words.length - this.wordsToLearn.length;
+      },
+      newWords() {
+        return this.wordsToLearn.length;
+      }
+  },
+  watch: {
+    newWords(newNumber) {
+      if(newNumber <= 0) {
+        this._updateApp();
+      }
+    }
   },
   components: {
     WordCard,
@@ -50,6 +69,14 @@ export default {
     },
     _filterWordsToLearn() {
       return (this.wordsToLearn = this.words.filter((word) => word.answered === false));
+    },
+    
+    _updateApp() {
+      if(confirm("You have learned everything, congratulations! Do you want to learn the words again? The page will reload.")) {
+        window.location.reload();
+      } else {
+        return;
+      }
     }
   },
   created() {
