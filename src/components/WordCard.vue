@@ -1,8 +1,9 @@
 <template>
   <section>
-    <img :alt="shownWord.url" />
-    <h2>{{ shownWord.English }}</h2>
-    <h2>{{ shownWord.Serbian }}</h2>
+    <img :src="wordImgUrl" width="50" />
+    <img src="../assets/images/book.jpg" />
+    <h2 v-if="shownEnglish">{{ shownWord.English }}</h2>
+    <h2 v-if="!shownEnglish">{{ shownWord.Serbian }}</h2>
     <h2>{{ shownWord.id }}</h2>
     <button @click="changeWord">Change correct word</button>
     <button @click="checkWord" >False word</button>
@@ -16,7 +17,13 @@ export default {
     return {
       wordsToLearn: this.words.length,
       emptyWords: false,
+      shownEnglish: true,
     };
+  },
+  computed: {
+    wordImgUrl() {
+      return `../assets/images${this.shownWord.url}`;
+    }
   },
   props: {
     shownWord: {
@@ -33,6 +40,13 @@ export default {
       this._removeWord();
       this.$emit("changeWord", this.shownWord);
     },
+    randomiseLanguage() {
+      if(Math.floor(Math.random() * 2) === 0) {
+        return this.shownEnglish = false;
+      } else {
+        return this.shownEnglish = true;
+      }
+    },
     _calculateWords() {
       if (this.shownWord.answered === true || this.wordsToLearn <= 0) {
         return (this.emptyWords = true);
@@ -47,10 +61,16 @@ export default {
       this.shownWord.answered = true;
       this.wordsToLearn--;
     },
+    // _getImgUrl() {
+    //   return this.wordImgUrl = require(`../../public/assets/img/${this.shownWord.url}`);
+    // }
   },
   beforeUpdate() {
     this._calculateWords();
   },
+  created() {
+    this.randomiseLanguage();
+  }
 };
 </script>
 
