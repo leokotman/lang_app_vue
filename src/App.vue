@@ -2,7 +2,7 @@
   <div id="app">
     <h1>Hello WORLD!</h1>
     <!-- <p>{{words}}</p> -->
-    <WordCard :words="words" />
+    <WordCard :shownWord="shownWord" :words="words" @changeWord="showWord" />
   </div>
 </template>
 
@@ -14,11 +14,29 @@ export default {
   name: "App",
   data() {
     return {
-      words: data.words,
-    }
+      words: [...data.words],
+      shownWord: {},
+    };
   },
   components: {
     WordCard,
+  },
+  methods: {
+    showWord() {
+      this._randomiseWord();
+      if (this.shownWord.answered === true) {
+        this._randomiseWord();
+      } else {
+        return this.shownWord;
+      }
+    },
+    _randomiseWord() {
+      return (this.shownWord =
+        this.words[Math.floor(Math.random() * this.words.length)]);
+    },
+  },
+  created() {
+    this.showWord();
   },
 };
 </script>
@@ -31,5 +49,6 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+  background-color: lightblue;
 }
 </style>
