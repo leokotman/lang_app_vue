@@ -1,17 +1,24 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+    <h1>Hello WORLD!</h1>
+    <!-- <p>{{words}}</p> -->
+    <WordCard :words="words" />
   </div>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+import WordCard from "./components/WordCard.vue";
+import data from "./data.json";
 
 export default {
   name: "App",
+  data() {
+    return {
+      words: data.words,
+    }
+  },
   components: {
-    HelloWorld,
+    WordCard,
   },
 };
 </script>
