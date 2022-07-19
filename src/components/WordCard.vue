@@ -5,6 +5,7 @@
       <h2>{{ shownWord.Serbian }}</h2>
       <h2>{{ shownWord.id }}</h2>
       <button @click="changeWord">Change word</button>
+      <p v-if="emptyWords">You learned everything!</p>
   </section>
 </template>
 
@@ -12,6 +13,8 @@
 export default {
   data() {
     return {
+      wordsToLearn: this.words.length,
+      emptyWords: false,
     };
   },
   props: {
@@ -26,9 +29,21 @@ export default {
   },
   methods: {
     changeWord() {
+      this.shownWord.answered = true;
+      this.wordsToLearn--;
       this.$emit("changeWord", this.shownWord);
+    },
+    checkWords() {
+      if (this.shownWord.answered === true || this.wordsToLearn <= 0) {
+        return this.emptyWords = true;
+      } else {
+        return;
+      }
     }
   },
+  beforeUpdate() {
+    this.checkWords();
+  }
 };
 </script>
 

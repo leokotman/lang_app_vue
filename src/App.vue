@@ -1,8 +1,11 @@
 <template>
   <div id="app">
     <h1>Hello WORLD!</h1>
-    <!-- <p>{{words}}</p> -->
-    <WordCard :shownWord="shownWord" :words="words" @changeWord="showWord" />
+    <WordCard
+      :shownWord="shownWord"
+      :words="words"
+      @changeWord="changeWord(shownWord)"
+    />
   </div>
 </template>
 
@@ -16,6 +19,7 @@ export default {
     return {
       words: [...data.words],
       shownWord: {},
+      wordsToLearn: [],
     };
   },
   components: {
@@ -23,19 +27,35 @@ export default {
   },
   methods: {
     showWord() {
-      this._randomiseWord();
-      if (this.shownWord.answered === true) {
-        this._randomiseWord();
+      this._filterWordsToLearn();
+      const randomWord = this._randomiseWord();
+      if (randomWord.answered === true && this.wordsToLearn.length > 0) {
+        this.showWord();
+      } else if (this.wordsToLearn.length > 0) {
+        return (this.shownWord = randomWord);
       } else {
-        return this.shownWord;
+        return this.shownWord = {};
       }
     },
-    _randomiseWord() {
-      return (this.shownWord =
-        this.words[Math.floor(Math.random() * this.words.length)]);
+    changeWord(shownWord) {
+      console.log(shownWord);
+      // const wordToReplace = this.words.find((word) => word.id === shownWord.id);
+      // console.log(wordToReplace);
+      this.showWord();
     },
+    _randomiseWord() {
+      let randomWord =
+        this.words[Math.floor(Math.random() * this.words.length)];
+      return randomWord;
+    },
+    _filterWordsToLearn() {
+      return (this.wordsToLearn = this.words.filter((word) => word.answered === false));
+    }
   },
   created() {
+    this.showWord();
+  },
+  beforeUpdate() {
     this.showWord();
   },
 };
