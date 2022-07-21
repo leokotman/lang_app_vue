@@ -1,7 +1,6 @@
 <template>
   <section>
-    <img :src="wordImgUrl" width="50" />
-    <img src="../assets/images/book.jpg" />
+    <img :src="require(`../assets/images${shownWord.url}`)" width="100" />
     <h2 v-if="shownEnglish">{{ shownWord.English }}</h2>
     <h2 v-if="!shownEnglish">{{ shownWord.Serbian }}</h2>
     <h2>{{ shownWord.id }}</h2>
@@ -20,11 +19,11 @@ export default {
       shownEnglish: true,
     };
   },
-  computed: {
-    wordImgUrl() {
-      return `../assets/images${this.shownWord.url}`;
-    }
-  },
+  // computed: {
+  //   wordImgUrl() {
+  //     return `../assets/images${this.shownWord.url}`;
+  //   }
+  // },
   props: {
     shownWord: {
       type: Object,
