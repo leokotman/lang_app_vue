@@ -1,21 +1,27 @@
 <template>
   <div id="app">
-    <h1>Hello WORLD!</h1>
-    <WordCard
-      :shownWord="shownWord"
-      :words="wordsToLearn"
-      @changeWord="changeWord(shownWord)"
-    />
-    <div> <img src="./assets/icons/like.svg" alt="like"/> {{learnedWords}} / {{words.length}} </div>
-    <div> <img src="./assets/icons/dislike.svg" alt="dislike"/> {{newWords}} / {{words.length}} </div>
+    <img :src="logo" alt="weborigo logo" class="main_logo" />
+    <section class="card_block">
+      <WordCard
+        :shownWord="shownWord"
+        :words="wordsToLearn"
+        @changeCorrectWord="changeWord(shownWord)"
+      />
+      <div>
+        <img src="./assets/icons/like.svg" alt="like" /> {{ learnedWords }} /
+        {{ words.length }}
+        <img src="./assets/icons/dislike.svg" alt="dislike" /> {{ newWords }} /
+        {{ words.length }}
+      </div>
+    </section>
   </div>
 </template>
 
 <script>
 import WordCard from "./components/WordCard.vue";
 import data from "./data.json";
-// import like from "./assets/icons/like.svg";
-// import dislike from "./assets/icons/dislike.svg";
+import logoSm from "./assets/logo/weborigo_logo.png";
+import logoBig from "./assets/logo/weborigo_logo_big.png";
 
 export default {
   name: "App",
@@ -24,22 +30,31 @@ export default {
       words: [...data.words],
       shownWord: {},
       wordsToLearn: [],
+      logo: logoSm,
+      windowWidth: document.documentElement.clientWidth,
     };
   },
   computed: {
-      learnedWords() {
-        return this.words.length - this.wordsToLearn.length;
-      },
-      newWords() {
-        return this.wordsToLearn.length;
-      }
+    learnedWords() {
+      return this.words.length - this.wordsToLearn.length;
+    },
+    newWords() {
+      return this.wordsToLearn.length;
+    },
   },
   watch: {
     newWords(newNumber) {
-      if(newNumber <= 0) {
+      if (newNumber <= 0) {
         this._updateApp();
       }
-    }
+    },
+    windowWidth(newNumber) {
+      if (newNumber > 1920) {
+        this.logo = logoBig;
+      } else if (newNumber < 1920) {
+        this.logo = logoSm;
+      }
+    },
   },
   components: {
     WordCard,
@@ -53,7 +68,7 @@ export default {
       } else if (this.wordsToLearn.length > 0) {
         return (this.shownWord = randomWord);
       } else {
-        return this.shownWord = {};
+        return (this.shownWord = {});
       }
     },
     changeWord(shownWord) {
@@ -68,34 +83,67 @@ export default {
       return randomWord;
     },
     _filterWordsToLearn() {
-      return (this.wordsToLearn = this.words.filter((word) => word.answered === false));
+      return (this.wordsToLearn = this.words.filter(
+        (word) => word.answered === false
+      ));
     },
-    
+
     _updateApp() {
-      if(confirm("You have learned everything, congratulations! Do you want to learn the words again? The page will reload.")) {
-        window.location.reload();
+      if (
+        confirm(
+          "You have learned everything, congratulations! Do you want to learn the words again? The page will reload."
+        )
+      ) {
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
       } else {
         return;
       }
-    }
+    },
+    _getDimensions() {
+      this.windowWidth = document.documentElement.clientWidth;
+    },
   },
   created() {
     this.showWord();
   },
-  beforeUpdate() {
-    this.showWord();
+  mounted() {
+    window.addEventListener("resize", this._getDimensions);
+  },
+  unmounted() {
+    window.removeEventListener("resize", this._getDimensions);
   },
 };
 </script>
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Roboto", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-  background-color: lightblue;
+  color: #222222;
+  background-color: #ff6700;
+  min-height: 100vh;
+  font-size: 1.5rem;
+}
+
+.card_block {
+  background-color: #fff;
+  width: 66.6%;
+  max-width: 1280px;
+  height: clamp(73vh, 75vh, 827px);
+  margin: 0 auto;
+  padding: 1.6rem 0 3.125rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.16);
+  border-radius: 10px;
+}
+.main_logo {
+  padding: 50px 0;
 }
 </style>

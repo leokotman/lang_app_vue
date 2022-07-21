@@ -1,11 +1,14 @@
 <template>
   <section>
-    <img :src="require(`../assets/images${shownWord.url}`)" width="100" />
+    <div class="image_block">
+      <img :src="require(`../assets/images${shownWord.url}`)" width="300" />
+    </div>
     <h2 v-if="shownEnglish">{{ shownWord.English }}</h2>
     <h2 v-if="!shownEnglish">{{ shownWord.Serbian }}</h2>
-    <h2>{{ shownWord.id }}</h2>
-    <button @click="changeWord">Change correct word</button>
-    <button @click="checkWord" >False word</button>
+    <input type="text" v-model="wordInput" @keyup.enter="checkWord" />
+    <button class="btn_check" @click="checkWord">Let's see</button>
+    <!-- <button @click="changeCorrectWord">Change correct word</button> -->
+    <!-- <button @click="checkWord">False word</button> -->
     <p v-if="emptyWords">You learned everything!</p>
   </section>
 </template>
@@ -17,13 +20,9 @@ export default {
       wordsToLearn: this.words.length,
       emptyWords: false,
       shownEnglish: true,
+      wordInput: "",
     };
   },
-  // computed: {
-  //   wordImgUrl() {
-  //     return `../assets/images${this.shownWord.url}`;
-  //   }
-  // },
   props: {
     shownWord: {
       type: Object,
@@ -35,11 +34,31 @@ export default {
     },
   },
   methods: {
-    changeWord() {
-      this._removeWord();
-      this.$emit("changeWord", this.shownWord);
+    checkWord() {
+      let inputWord = this.wordInput.trim().toLowerCase();
+      let correctWord = this.shownEnglish ? this.shownWord.Serbian.toLowerCase() : this.shownWord.English.toLowerCase();
+
+      console.log("inputWord:", inputWord);
+      console.log("correctWord:", correctWord);
+      if (inputWord === correctWord) {
+        console.log('the word is correct');
+        this.changeCorrectWord();
+      } else {
+        console.log('the word is incorrect');
+        this.changeFalseWord();
+      }
+      
+      this._randomiseLanguage();
+      this._clearInput();
     },
-    randomiseLanguage() {
+    changeCorrectWord() {
+      this._removeWord();
+      this.$emit("changeCorrectWord", this.shownWord);
+    },
+    changeFalseWord() {
+      this.$emit("changeCorrectWord", this.shownWord);
+    },
+    _randomiseLanguage() {
       if(Math.floor(Math.random() * 2) === 0) {
         return this.shownEnglish = false;
       } else {
@@ -53,29 +72,62 @@ export default {
         return;
       }
     },
-    checkWord() {
-      this.$emit("changeWord", this.shownWord);
-    },
     _removeWord() {
       this.shownWord.answered = true;
       this.wordsToLearn--;
     },
-    // _getImgUrl() {
-    //   return this.wordImgUrl = require(`../../public/assets/img/${this.shownWord.url}`);
-    // }
+    _clearInput() {
+      return this.wordInput = "";
+    }
   },
   beforeUpdate() {
     this._calculateWords();
   },
   created() {
-    this.randomiseLanguage();
+    this._randomiseLanguage();
   }
 };
 </script>
 
 <style scoped>
 section {
-  background-color: #fff;
-  max-width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 80%;
+}
+.image_block {
+  height: 464px;
+}
+img {
+  max-height: 464px;
+  width: 700px;
+  filter: drop-shadow(-6px 6px 10px rgba(255, 103, 0, 0.12));
+  border-radius: 10px;
+}
+h2 {
+  font-weight: 600;
+}
+input {
+  width: 700px;
+  height: 50px;
+  box-shadow: -6px 6px 10px rgba(255, 103, 0, 0.3), 6px -6px 10px rgba(231, 190, 163, 0.3);
+  border-radius: 10px;
+  border-color: transparent;
+  font-family: inherit;
+  font-size: inherit;
+  text-align: center;
+}
+.btn_check {
+  background-color: #FF6700;
+  color: #fff;
+  font-weight: 900;
+  font-family: inherit;
+  font-size: inherit;
+  padding: 1rem 7.125rem;
+  box-sizing: border-box;
+  border-radius: 10px;
+  border-color: transparent;
 }
 </style>
