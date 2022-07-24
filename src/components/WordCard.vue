@@ -7,8 +7,6 @@
     <h2 v-if="!shownEnglish">{{ shownWord.Serbian }}</h2>
     <input type="text" v-model="wordInput" @keyup.enter="checkWord" />
     <button class="btn_check" @click="checkWord">Let's see</button>
-    <!-- <button @click="changeCorrectWord">Change correct word</button> -->
-    <!-- <button @click="checkWord">False word</button> -->
     <p v-if="emptyWords">You learned everything!</p>
   </section>
 </template>
@@ -95,6 +93,7 @@ section {
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
+  gap: 1.25rem;
   height: 80%;
 }
 .image_block {
@@ -126,8 +125,29 @@ input {
   font-family: inherit;
   font-size: inherit;
   padding: 1rem 7.125rem;
+  margin-top: 1.563rem;
   box-sizing: border-box;
   border-radius: 10px;
   border-color: transparent;
+}
+
+@media screen and (max-width: 1280px) {
+  .image_block {
+    height: 266px;
+  }
+  img {
+    width: 400px;
+  }
+  h2 {
+    font-size: 1.25rem;
+  }
+  input {
+    width: 500px;
+  }
+  .btn_check {
+    padding: 0.875rem 5.375rem;
+    font-size: 1.25rem;
+    margin-top: 1.875rem;
+  }
 }
 </style>
