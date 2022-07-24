@@ -152,7 +152,7 @@ export default {
   border-radius: 10px;
 }
 .main_logo {
-  padding: 50px 0;
+  padding: 3.125rem 0;
 }
 .points {
   color: #ff6700;
@@ -160,6 +160,24 @@ export default {
   align-items: center;
   justify-content: center;
   gap: 19%;
+}
+.points span {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+
+@media screen and (min-width: 1280px) {
+  .card_block {
+    width: 80%;
+  }
+}
+@media screen and (min-width: 1920px) {
+  .card_block {
+    justify-content: center;
+    width: 66%;
+  }
 }
 
 @media screen and (max-width: 1280px) {
@@ -176,15 +194,22 @@ export default {
     font-size: 1rem;
   }
 }
-@media screen and (min-width: 1280px) {
+@media screen and (max-width: 660px) {
+  .main_logo {
+    padding: 2.7rem 0 1.875rem;
+  }
   .card_block {
-    width: 80%;
+    background-image: none;
+    border-radius: 40px;
   }
 }
-@media screen and (min-width: 1920px) {
+
+
+@media screen and (max-width: 380px) {
   .card_block {
-    justify-content: center;
-    width: 66%;
+    flex-direction: column-reverse;
+    padding: 1.5rem 0 1.25rem;
   }
 }
+
 </style>

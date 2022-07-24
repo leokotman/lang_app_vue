@@ -109,8 +109,10 @@ h2 {
   font-weight: 600;
 }
 input {
-  width: 700px;
+  width: 54.68%;
   height: 50px;
+  padding: 0;
+  border-width: 0;
   box-shadow: -6px 6px 10px rgba(255, 103, 0, 0.3), 6px -6px 10px rgba(231, 190, 163, 0.3);
   border-radius: 10px;
   border-color: transparent;
@@ -131,23 +133,39 @@ input {
   border-color: transparent;
 }
 
+
+
 @media screen and (max-width: 1280px) {
   .image_block {
     height: 266px;
   }
   img {
     width: 400px;
+    object-fit: contain;
   }
   h2 {
     font-size: 1.25rem;
   }
   input {
-    width: 500px;
+    width: 42.37%;
   }
   .btn_check {
     padding: 0.875rem 5.375rem;
     font-size: 1.25rem;
     margin-top: 1.875rem;
+  }
+}
+
+@media screen and (max-width: 660px) {
+  input {
+    width: 60%;
+  }
+  .image_block {
+    height: 61vw;
+  }
+  img {
+    width: 88.5%;
+    height: 100%;
   }
 }
 </style>
