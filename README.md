@@ -1,4 +1,8 @@
 # weborigo_lang_vue
+App for learning Serbian-English language:
+random language is shown,
+answered words add +1 point to statistics & are hidden from showing again.
+Game can be reloaded after all words are answered correctly.
 
 ## Project setup
 ```
