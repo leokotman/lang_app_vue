@@ -9,12 +9,14 @@
       />
       <div class="points">
         <span
-          ><img src="./assets/icons/like.svg" alt="like" height="24" />{{ learnedWords }} /
-          {{ words.length }}</span
+          ><img src="./assets/icons/like.svg" alt="like" height="24" />{{
+            learnedWords
+          }}
+          / {{ words.length }}</span
         >
 
         <span
-          ><img src="./assets/icons/dislike.svg" alt="dislike" height="24"/>{{
+          ><img src="./assets/icons/dislike.svg" alt="dislike" height="24" />{{
             newWords
           }}
           / {{ words.length }}</span
@@ -162,12 +164,12 @@ export default {
   gap: 19%;
 }
 .points span {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
 }
 
-
+/* Adaptive & responsive design for 1920px, 1280px, 380px */
 @media screen and (min-width: 1280px) {
   .card_block {
     width: 80%;
@@ -204,12 +206,15 @@ export default {
   }
 }
 
-
 @media screen and (max-width: 380px) {
   .card_block {
     flex-direction: column-reverse;
     padding: 1.5rem 0 1.25rem;
+    width: 91.5%;
+  }
+  .main_logo {
+    max-width: 100%;
+    height: auto;
   }
 }
-
 </style>

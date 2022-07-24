@@ -133,8 +133,7 @@ input {
   border-color: transparent;
 }
 
-
-
+/* Adaptive & responsive design for 1920px, 1280px, 380px */
 @media screen and (max-width: 1280px) {
   .image_block {
     height: 266px;
@@ -166,6 +165,16 @@ input {
   img {
     width: 88.5%;
     height: 100%;
+  }
+}
+
+@media screen and (max-width: 380px) {
+  h2 {
+    font-size: 1rem;
+  }
+  .btn_check {
+    font-size: 1rem;
+    padding: 0.625rem 4.5rem;
   }
 }
 </style>
