@@ -5,7 +5,7 @@
       <WordCard
         :shownWord="shownWord"
         :words="wordsToLearn"
-        @changeCorrectWord="changeWord(shownWord)"
+        @changeWord="showWord"
       />
       <div class="points">
         <span
@@ -14,7 +14,6 @@
           }}
           / {{ words.length }}</span
         >
-
         <span
           ><img src="./assets/icons/dislike.svg" alt="dislike" height="24" />{{
             newWords
@@ -28,9 +27,9 @@
 
 <script>
 import WordCard from "./components/WordCard.vue";
-import data from "./data.json";
+import data from "./data.json"; //languages data
 import logoSm from "./assets/logo/weborigo_logo.png";
-import logoBig from "./assets/logo/weborigo_logo_big.png";
+import logoBig from "./assets/logo/weborigo_logo_big.png"; //logo for large resolutions
 
 export default {
   name: "App",
@@ -44,6 +43,7 @@ export default {
     };
   },
   computed: {
+    // Calculations of learned/not learned words to show statistics
     learnedWords() {
       return this.words.length - this.wordsToLearn.length;
     },
@@ -52,11 +52,14 @@ export default {
     },
   },
   watch: {
+    // Check for words left to learn to reload the app
     newWords(newNumber) {
       if (newNumber <= 0) {
         this._updateApp();
       }
     },
+
+    // Check for logo quality change
     windowWidth(newNumber) {
       if (newNumber > 1920) {
         this.logo = logoBig;
@@ -69,9 +72,11 @@ export default {
     WordCard,
   },
   methods: {
+    // Main function for rendering a random & not learned (yet) word
     showWord() {
       this._filterWordsToLearn();
       const randomWord = this._randomiseWord();
+
       if (randomWord.answered === true && this.wordsToLearn.length > 0) {
         this.showWord();
       } else if (this.wordsToLearn.length > 0) {
@@ -80,21 +85,22 @@ export default {
         return (this.shownWord = {});
       }
     },
-    changeWord(shownWord) {
-      console.log(shownWord);
-      this.showWord();
-    },
+
+    // get a random word from data to show
     _randomiseWord() {
       let randomWord =
         this.words[Math.floor(Math.random() * this.words.length)];
       return randomWord;
     },
+
+    // filter array of words to show not learned words - new array returned
     _filterWordsToLearn() {
       return (this.wordsToLearn = this.words.filter(
         (word) => word.answered === false
       ));
     },
 
+    // Congratulations after learning all words, suggestion to reload the app & statistics
     _updateApp() {
       if (
         confirm(
@@ -108,6 +114,7 @@ export default {
         return;
       }
     },
+
     _getDimensions() {
       this.windowWidth = document.documentElement.clientWidth;
     },

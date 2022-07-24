@@ -32,30 +32,33 @@ export default {
     },
   },
   methods: {
+    /* Main function to check the word from user's input:
+    to  change the word when correct/incorrect to a new random in a random language, add points to statictics */
     checkWord() {
       let inputWord = this.wordInput.trim().toLowerCase();
       let correctWord = this.shownEnglish ? this.shownWord.Serbian.toLowerCase() : this.shownWord.English.toLowerCase();
 
-      console.log("inputWord:", inputWord);
-      console.log("correctWord:", correctWord);
       if (inputWord === correctWord) {
-        console.log('the word is correct');
         this.changeCorrectWord();
       } else {
-        console.log('the word is incorrect');
         this.changeFalseWord();
       }
       
       this._randomiseLanguage();
       this._clearInput();
     },
+
+    // Change a word for showing, add point to CORRECT statistics, remove this word from showing
     changeCorrectWord() {
       this._removeWord();
-      this.$emit("changeCorrectWord", this.shownWord);
+      this.$emit("changeWord", this.shownWord);
     },
+    // Change a word for showing, leave statistics as is
     changeFalseWord() {
-      this.$emit("changeCorrectWord", this.shownWord);
+      this.$emit("changeWord", this.shownWord);
     },
+
+    // Change the language for showing
     _randomiseLanguage() {
       if(Math.floor(Math.random() * 2) === 0) {
         return this.shownEnglish = false;
@@ -63,6 +66,8 @@ export default {
         return this.shownEnglish = true;
       }
     },
+
+    // Check for the words left for learning in the array of data
     _calculateWords() {
       if (this.shownWord.answered === true || this.wordsToLearn <= 0) {
         return (this.emptyWords = true);
@@ -70,10 +75,14 @@ export default {
         return;
       }
     },
+
+    // Change the word status to 'answered' & remove it from the learning array
     _removeWord() {
       this.shownWord.answered = true;
       this.wordsToLearn--;
     },
+
+    // Clear the input's text
     _clearInput() {
       return this.wordInput = "";
     }
