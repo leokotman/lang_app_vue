@@ -1,17 +1,24 @@
 <template>
   <div id="app">
-    <img :src="logo" alt="weborigo logo" class="main_logo" />
+    <img :src="logo" alt="weborigo logo" class="main_logo" height="72" />
     <section class="card_block">
       <WordCard
         :shownWord="shownWord"
         :words="wordsToLearn"
         @changeCorrectWord="changeWord(shownWord)"
       />
-      <div>
-        <img src="./assets/icons/like.svg" alt="like" /> {{ learnedWords }} /
-        {{ words.length }}
-        <img src="./assets/icons/dislike.svg" alt="dislike" /> {{ newWords }} /
-        {{ words.length }}
+      <div class="points">
+        <span
+          ><img src="./assets/icons/like.svg" alt="like" height="24" />{{ learnedWords }} /
+          {{ words.length }}</span
+        >
+
+        <span
+          ><img src="./assets/icons/dislike.svg" alt="dislike" height="24"/>{{
+            newWords
+          }}
+          / {{ words.length }}</span
+        >
       </div>
     </section>
   </div>
@@ -73,8 +80,6 @@ export default {
     },
     changeWord(shownWord) {
       console.log(shownWord);
-      // const wordToReplace = this.words.find((word) => word.id === shownWord.id);
-      // console.log(wordToReplace);
       this.showWord();
     },
     _randomiseWord() {
@@ -131,19 +136,55 @@ export default {
 
 .card_block {
   background-color: #fff;
+  background-image: url("./assets/images/bg.png");
+  background-repeat: no-repeat;
+  background-position: 28% 40%;
   width: 66.6%;
   max-width: 1280px;
-  height: clamp(73vh, 75vh, 827px);
   margin: 0 auto;
   padding: 1.6rem 0 3.125rem;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  gap: 1.563rem;
   box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.16);
   border-radius: 10px;
 }
 .main_logo {
   padding: 50px 0;
+}
+.points {
+  color: #ff6700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 19%;
+}
+
+@media screen and (max-width: 1280px) {
+  .main_logo {
+    height: 50px;
+  }
+  .card_block {
+    padding: 3.125rem 0 2.25rem;
+    background-size: 68%;
+    width: 92%;
+    background-position: 25% top;
+  }
+  .points {
+    font-size: 1rem;
+  }
+}
+@media screen and (min-width: 1280px) {
+  .card_block {
+    width: 80%;
+  }
+}
+@media screen and (min-width: 1920px) {
+  .card_block {
+    justify-content: center;
+    width: 66%;
+  }
 }
 </style>
