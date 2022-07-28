@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <img :src="logo" alt="weborigo logo" class="main_logo" height="72" />
+    <header>
+      <img :src="logo" alt="lapp logo" class="main_logo" height="200" />
+    </header>
     <section class="card_block">
       <WordCard
         :shownWord="shownWord"
@@ -26,10 +28,10 @@
 </template>
 
 <script>
+import axios from "axios";
 import WordCard from "./components/WordCard.vue";
 import data from "./data.json"; //languages data
-import logoSm from "./assets/logo/weborigo_logo.png";
-import logoBig from "./assets/logo/weborigo_logo_big.png"; //logo for large resolutions
+import logo from "./assets/logo/logo_transparent.png";
 
 export default {
   name: "App",
@@ -38,8 +40,9 @@ export default {
       words: [...data.words],
       shownWord: {},
       wordsToLearn: [],
-      logo: logoSm,
-      windowWidth: document.documentElement.clientWidth,
+      logo: logo,
+      dataFromDB: null,
+      // windowWidth: document.documentElement.clientWidth,
     };
   },
   computed: {
@@ -60,18 +63,29 @@ export default {
     },
 
     // Check for logo quality change
-    windowWidth(newNumber) {
-      if (newNumber > 1920) {
-        this.logo = logoBig;
-      } else if (newNumber < 1920) {
-        this.logo = logoSm;
-      }
-    },
+    // windowWidth(newNumber) {
+    //   if (newNumber > 1920) {
+    //     this.logo = logoBig;
+    //   } else if (newNumber < 1920) {
+    //     this.logo = logo;
+    //   }
+    // },
   },
   components: {
     WordCard,
   },
   methods: {
+    getData() {
+      axios
+        .get("https://api.npoint.io/afbd4c6c7edae59beb97")
+        .then(
+          (response) => (
+            (this.dataFromDB = response.data), console.log(this.dataFromDB)
+          )
+        )
+        .catch((err) => console.log(err));
+    },
+
     // Main function for rendering a random & not learned (yet) word
     showWord() {
       this._filterWordsToLearn();
@@ -115,18 +129,19 @@ export default {
       }
     },
 
-    _getDimensions() {
-      this.windowWidth = document.documentElement.clientWidth;
-    },
+    // _getDimensions() {
+    //   this.windowWidth = document.documentElement.clientWidth;
+    // },
   },
   created() {
     this.showWord();
+    this.getData();
   },
   mounted() {
-    window.addEventListener("resize", this._getDimensions);
+    // window.addEventListener("resize", this._getDimensions);
   },
   unmounted() {
-    window.removeEventListener("resize", this._getDimensions);
+    // window.removeEventListener("resize", this._getDimensions);
   },
 };
 </script>
@@ -138,14 +153,20 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #222222;
-  background-color: #ff6700;
+  background: rgb(255, 255, 255);
+  background: linear-gradient(
+    0deg,
+    rgba(85, 82, 115, 0.4) 26%,
+    rgba(255, 255, 255, 1) 68%
+  );
   min-height: 100vh;
   font-size: 1.5rem;
 }
-
+header {
+  background-color: #fff;
+}
 .card_block {
   background-color: #fff;
-  background-image: url("./assets/images/bg.png");
   background-repeat: no-repeat;
   background-position: 28% 40%;
   width: 66.6%;
@@ -161,10 +182,11 @@ export default {
   border-radius: 10px;
 }
 .main_logo {
-  padding: 3.125rem 0;
+  /* padding: 3.125rem 0; */
+  width: max-content;
 }
 .points {
-  color: #ff6700;
+  color: #555273;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -187,11 +209,14 @@ export default {
     justify-content: center;
     width: 66%;
   }
+  .main_logo {
+    height: 400px;
+  }
 }
 
 @media screen and (max-width: 1280px) {
   .main_logo {
-    height: 50px;
+    height: 150px;
   }
   .card_block {
     padding: 3.125rem 0 2.25rem;
@@ -205,10 +230,9 @@ export default {
 }
 @media screen and (max-width: 660px) {
   .main_logo {
-    padding: 2.7rem 0 1.875rem;
+    /* padding: 2.7rem 0 1.875rem; */
   }
   .card_block {
-    background-image: none;
     border-radius: 40px;
   }
 }
@@ -218,10 +242,6 @@ export default {
     flex-direction: column-reverse;
     padding: 1.5rem 0 1.25rem;
     width: 91.5%;
-  }
-  .main_logo {
-    max-width: 100%;
-    height: auto;
   }
 }
 </style>
