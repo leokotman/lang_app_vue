@@ -42,6 +42,7 @@ export default {
       wordsToLearn: [],
       logo: logo,
       dataFromDB: null,
+      dbUrl: "https://api.npoint.io/afbd4c6c7edae59beb97",
       // windowWidth: document.documentElement.clientWidth,
     };
   },
@@ -77,7 +78,7 @@ export default {
   methods: {
     getData() {
       axios
-        .get("https://api.npoint.io/afbd4c6c7edae59beb97")
+        .get(this.dbUrl)
         .then(
           (response) => (
             (this.dataFromDB = response.data), console.log(this.dataFromDB)

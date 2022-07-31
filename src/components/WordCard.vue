@@ -122,7 +122,7 @@ input {
   height: 50px;
   padding: 0;
   border-width: 0;
-  box-shadow: -6px 6px 10px rgba(255, 103, 0, 0.3), 6px -6px 10px rgba(231, 190, 163, 0.3);
+  box-shadow: -6px 6px 10px rgba(85,82,115,0.4);
   border-radius: 10px;
   border-color: transparent;
   font-family: inherit;
@@ -130,7 +130,7 @@ input {
   text-align: center;
 }
 .btn_check {
-  background-color: #FF6700;
+  background-color: rgba(85,82,115,0.6);
   color: #fff;
   font-weight: 900;
   font-family: inherit;
@@ -140,6 +140,12 @@ input {
   box-sizing: border-box;
   border-radius: 10px;
   border-color: transparent;
+}
+.btn_check:hover {
+  background-color: rgba(85,82,115,0.9);
+}
+.btn_check:active {
+  background-color: rgb(85, 82, 115);
 }
 
 /* Adaptive & responsive design for 1920px, 1280px, 380px */
